@@ -4,6 +4,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const config = require('../config/config.js');
+const CarBrand = require('./models/Brands');
 
 mongoose.Promise = global.Promise;
 
@@ -12,6 +13,14 @@ const app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use(cors());
+
+app.post('/cars', (req,res) => {
+  const title = req.body.title;
+  CarBrand.create({
+    title: title
+  });
+  res.send('ok')
+});
 
 app.get('/posts', (req,res) => {
   res.send(
@@ -22,7 +31,7 @@ app.get('/posts', (req,res) => {
   )
 });
 
-mongoose.connect(config.dbURL);
+mongoose.connect(config.dbURL, config.dbOptions);
 
 mongoose.connection
   .once('open', () => {

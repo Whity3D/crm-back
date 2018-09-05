@@ -22,13 +22,15 @@ app.post('/cars', (req,res) => {
   res.send('ok')
 });
 
-app.get('/posts', (req,res) => {
-  res.send(
-    [{
-      title: "Hello World!",
-      description: "Hi there! How are you?"
-    }]
-  )
+app.get('/cars', (req,res) => {
+  let carBrands = [];
+  CarBrand.find().sort({ title: 'asc' }).exec(function (err, brands) {
+    if (err) throw err;
+    console.log(brands);
+    carBrands = brands;
+    res.send(carBrands);
+  })
+
 });
 
 mongoose.connect(config.dbURL, config.dbOptions);
